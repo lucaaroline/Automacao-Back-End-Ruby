@@ -5,6 +5,7 @@ Funcionalidade: Pesquisar Funcionarios
     O usuario do sistema
     Deseja poder consultar informacoes dos Funcionarios
 
+    @cenario_um
     Cenario: Buscar informacoes de funcionario
         Dado que o usuario consulte informacoes de funcionario
         Quando ele realizar a pesquisa
@@ -15,3 +16,9 @@ Funcionalidade: Pesquisar Funcionarios
         Dado que o usuario cadastre um novo funcionario
         Quando ele enviar as informacoes do funcionario
         Entao esse funcionario sera cadastrado
+
+    @cenario_tres
+    Cenario: Alterar informacoes cadastrais
+        Dado que o usuario altere uma informacao de funcionario
+        Quando ele enviar as novas informacoes
+        Entao as informacoes serao alteradas

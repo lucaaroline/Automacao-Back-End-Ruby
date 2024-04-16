@@ -1,4 +1,4 @@
-Dado('que o usuario consulte informacoes de funcionario') do
+  Dado('que o usuario consulte informacoes de funcionario') do
     @get_url = 'http://dummy.restapiexample.com/api/v1/employees'
   end
   
@@ -17,8 +17,8 @@ Dado('que o usuario consulte informacoes de funcionario') do
     @post_url = 'http://dummy.restapiexample.com/api/v1/create'
   end
   
-  Quando('ele enviar as informacoes do funcionario') do    #informando o tipo de formato usado através do header 
-    @create_employee = HTTParty.post(@post_url, :headers => {'Content-Type': 'application/json'},  body: {
+  Quando('ele enviar as informacoes do funcionario') do    #sempre informar através do header o tipo de formato usado 
+    @create_employee = HTTParty.post(@post_url, :headers => {'Content-Type': 'application/json'},  body: { 
       "id": 30,
       "employee_name": "Luiza Caroline",
       "employee_salary": 420800,
@@ -34,7 +34,7 @@ Dado('que o usuario consulte informacoes de funcionario') do
     expect(@create_employee.msg).to eql 'OK'
     expect(@create_employee['status']).to eql 'success'   #variável existente no response da requisição
     expect(@create_employee['message']).to eql 'Successfully! Record has been added.'
-    expect(@create_employee['data']["employee_name"]).to eql 'Luiza Caroline' #campo 'employee_name' dentro da chave 'data' - passar caminho
+    expect(@create_employee['data']["employee_name"]).to eql 'Luiza Caroline' #campo 'employee_name' dentro da chave 'data' - passar o caminho
     expect(@create_employee['data']["employee_salary"]).to eql (420800)
     expect(@create_employee['data']["employee_age"]).to eql (26)
 
@@ -45,3 +45,32 @@ Dado('que o usuario consulte informacoes de funcionario') do
     puts @create_employee["message"]
     puts @create_employee['data']["employee_name"] 
   end
+
+
+  Dado("que o usuario altere uma informacao de funcionario") do
+    @get_employee = HTTParty.get('http://dummy.restapiexample.com/api/v1/employees', :headers => {'Content-Type': 'application/json'})  #armazenado um get na variavel
+    puts @get_employee['data'][0]['id']
+    @put_url = 'http://dummy.restapiexample.com/api/v1/update/' + @get_employee['data'][0]['id'].to_s  #convertendo para string 
+  end                                                            #usando as chaves do get para retornar o valor de id e usar na url 
+  
+  Quando("ele enviar as novas informacoes") do
+    @update_employee = HTTParty.put(@put_url, :headers => {'Content-Type': 'application/json'},  body: { 
+      "employee_name": "Alberto",
+      "employee_salary": 100,
+      "employee_age": 35,
+      "profile_image": ""
+    }.to_json)
+    
+    puts(@update_employee)
+  end
+  
+  Entao("as informacoes serao alteradas") do
+    expect(@update_employee.code).to eql (200)
+    expect(@update_employee.msg).to eql 'OK'
+    expect(@update_employee["status"]).to eql 'success'
+    expect(@update_employee["message"]).to eql 'Successfully! Record has been updated.'
+    expect(@update_employee['data']["employee_name"]).to eql 'Alberto'
+    expect(@update_employee['data']["employee_salary"]).to eql (100)
+    expect(@update_employee['data']["employee_age"]).to eql (35)
+  end
+
