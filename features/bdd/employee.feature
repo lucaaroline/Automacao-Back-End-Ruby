@@ -22,3 +22,9 @@ Funcionalidade: Pesquisar Funcionarios
         Dado que o usuario altere uma informacao de funcionario
         Quando ele enviar as novas informacoes
         Entao as informacoes serao alteradas
+
+    @cenario_quatro
+    Cenario: Deletar cadastro de funcionario
+        Dado que um usuario queira deletar um funcionario
+        Quando ele inserir a identificacao unica
+        Então o funcionario sera deletado do sistema

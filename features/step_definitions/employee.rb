@@ -12,7 +12,6 @@
     expect(@list_employee.message).to eql 'OK'
   end
 
-
   Dado('que o usuario cadastre um novo funcionario') do
     @post_url = 'http://dummy.restapiexample.com/api/v1/create'
   end
@@ -38,29 +37,30 @@
     expect(@create_employee['data']["employee_salary"]).to eql (420800)
     expect(@create_employee['data']["employee_age"]).to eql (26)
 
-    #impressao na tela para conferir valores
     puts @create_employee.code        
-    puts @create_employee.msg
+    puts @create_employee.msg                         #impressao na tela apenas para conferir valores
     puts @create_employee["status"]
     puts @create_employee["message"]
     puts @create_employee['data']["employee_name"] 
   end
 
-
   Dado("que o usuario altere uma informacao de funcionario") do
     @get_employee = HTTParty.get('http://dummy.restapiexample.com/api/v1/employees', :headers => {'Content-Type': 'application/json'})  #armazenado um get na variavel
-    puts @get_employee['data'][0]['id']
-    @put_url = 'http://dummy.restapiexample.com/api/v1/update/' + @get_employee['data'][0]['id'].to_s  #convertendo para string 
-  end                                                            #usando as chaves do get para retornar o valor de id e usar na url 
+    puts @get_employee['data'][0]['id']  #acessando um funcionario atraves do response armazenado na variável 
+                           #1a posição
+    @put_url = 'http://dummy.restapiexample.com/api/v1/update/' + @get_employee['data'][0]['id'].to_s  #converter para string 
+           #complementando a url usando as chaves do get para retornar o valor de id - info ainda chumbada no código
+  end                                                           
+  
   
   Quando("ele enviar as novas informacoes") do
-    @update_employee = HTTParty.put(@put_url, :headers => {'Content-Type': 'application/json'},  body: { 
+    @update_employee = HTTParty.put(@put_url, :headers => {'Content-Type': 'application/json'}, body: { 
       "employee_name": "Alberto",
       "employee_salary": 100,
       "employee_age": 35,
       "profile_image": ""
     }.to_json)
-    
+
     puts(@update_employee)
   end
   
@@ -72,5 +72,23 @@
     expect(@update_employee['data']["employee_name"]).to eql 'Alberto'
     expect(@update_employee['data']["employee_salary"]).to eql (100)
     expect(@update_employee['data']["employee_age"]).to eql (35)
+  end
+
+  Dado("que um usuario queira deletar um funcionario") do
+    @get_employee = HTTParty.get('http://dummy.restapiexample.com/api/v1/employees', :headers => {'Content-Type': 'application/json'})
+    @delete_url = 'http://dummy.restapiexample.com/api/v1/delete/' + @get_employee['data'][0]['id'].to_s 
+  end
+  
+  Quando("ele inserir a identificacao unica") do
+    @delete_employee = HTTParty.delete(@delete_url, :headers => {'Content-Type': 'application/json'})
+    puts @delete_employee
+  end
+  
+  Então("o funcionario sera deletado do sistema") do
+    expect(@delete_employee.code).to eql (200)
+    expect(@delete_employee.msg).to eql 'OK'
+    expect(@delete_employee["status"]).to eql 'success' 
+    expect(@delete_employee["data"]).to eql '27'
+    expect(@delete_employee["message"]).to eql 'Successfully! Record has been deleted'
   end
 
