@@ -14,7 +14,8 @@ Funcionalidade: Pesquisar Funcionarios
     @cenario_dois
     Cenario: Cadastrar funcionario
         Dado que o usuario cadastre um novo funcionario
-        Quando ele enviar as informacoes do funcionario
+       # Quando ele enviar as informacoes do funcionario
+       Quando ele enviar informações de funcionario
         Entao esse funcionario sera cadastrado
 
     @cenario_tres
