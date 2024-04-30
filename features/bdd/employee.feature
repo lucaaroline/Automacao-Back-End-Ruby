@@ -1,9 +1,9 @@
 # language: pt
 
-Funcionalidade: Pesquisar Funcionarios
-    Para averiguar informacoes
+Funcionalidade: Gerenciar Funcionarios
+    Para controlar informaçoes
     O usuario do sistema
-    Deseja poder consultar informacoes dos Funcionarios
+    Deseja poder gerenciar registros dos Funcionarios
 
     @cenario_um
     Cenario: Buscar informacoes de funcionario
@@ -14,8 +14,7 @@ Funcionalidade: Pesquisar Funcionarios
     @cenario_dois
     Cenario: Cadastrar funcionario
         Dado que o usuario cadastre um novo funcionario
-       # Quando ele enviar as informacoes do funcionario
-       Quando ele enviar informações de funcionario
+        Quando ele enviar as informacoes do funcionario 
         Entao esse funcionario sera cadastrado
 
     @cenario_tres

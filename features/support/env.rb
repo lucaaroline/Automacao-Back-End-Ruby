@@ -5,3 +5,4 @@ require "httparty/response/headers"
 require "rspec"
 require 'pry'
 require 'ffaker'
+include RSpec::Matchers
